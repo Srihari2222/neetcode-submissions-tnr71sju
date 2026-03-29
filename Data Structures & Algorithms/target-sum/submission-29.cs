@@ -1,0 +1,26 @@
+public class Solution {
+    public int FindTargetSumWays(int[] nums, int S) {
+        Dictionary<int, int> dp = new Dictionary<int, int>();
+        dp[0] = 1;
+
+        foreach (int num in nums) {
+            Dictionary<int, int> nextDp = new Dictionary<int, int>();
+            foreach (var entry in dp) {
+                int total = entry.Key;
+                int count = entry.Value;
+
+                if (!nextDp.ContainsKey(total + num)) {
+                    nextDp[total + num] = 0;
+                }
+                nextDp[total + num] += count;
+
+                if (!nextDp.ContainsKey(total - num)) {
+                    nextDp[total - num] = 0;
+                }
+                nextDp[total - num] += count;
+            }
+            dp = nextDp;
+        }
+        return dp.ContainsKey(S) ? dp[S] : 0;
+    }
+}
